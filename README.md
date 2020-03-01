@@ -1,2 +1,2 @@
-# noteit
+# NoteIt
 Make note of anything...
