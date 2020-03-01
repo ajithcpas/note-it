@@ -1,0 +1,17 @@
+<div class="row note-head">
+  <div class="col-md-12 m-5">
+    <span class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="right" title="Edit"
+      {{action "editNote" note}}></span>
+    <span class="close" data-toggle="tooltip" data-placement="left" title="Delete" {{action "confirmDelete" note.id}}>&times;</span>
+  </div>
+</div>
+<div class="row note-title">
+  <div class="col-md-12">
+    <div class="{{if note.title "border-bottom"}}"><strong>{{{note.title}}}</strong></div>
+  </div>
+</div>
+<div class="row note-body">
+  <div class="col-md-12">
+    <div>{{{note.data}}}</div>
+  </div>
+</div>

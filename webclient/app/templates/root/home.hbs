@@ -1,0 +1,23 @@
+{{note-editor note=currNote show=currNote.editing save="getAllNote"}}
+{{#unless isSearch}}
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <button class="btn btn-primary w-30p" {{action "addNote"}}>Create New Note</button>
+    </div>
+  </div>
+{{/unless}}
+
+<div class="notes">
+  {{#each notes as |note|}}
+    {{note-view note=note onedit="editNote" ondelete="deleteNote"}}
+  {{else}}
+    <div class="text-center">
+      {{#if isSearch}}
+        No note contains the search term :(<br/>
+        <a href="#" class="btn btn-link" {{action "getAllNote"}}>Go Home</a>
+      {{else}}
+        No note created yet :(
+      {{/if}}
+    </div>
+  {{/each}}
+</div>
