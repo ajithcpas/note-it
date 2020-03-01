@@ -31,10 +31,10 @@ public class AppServerConfig
 
         scheme = env.getProperty("app.server.scheme");
         host = env.getProperty("app.server.name");
-        port = env.getProperty("server.port");
+        port = env.getProperty("app.server.port");
         context = null;
         url = scheme + "://" + host;
-        if (port != null && !port.equals("80"))
+        if (port != null && !port.equals("80") && !port.equals("443"))
         {
             url += ":" + port;
         }
