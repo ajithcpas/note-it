@@ -1,0 +1,11 @@
+<div class="form-group {{if hasSuccess "has-success has-feedback"}} {{if hasError "has-error has-feedback"}}">
+  {{input type=type class=className name=name value=value placeholder=placeholder key-up=(action "onchange")
+          enter=enter}}
+  {{#if hasSuccess}}
+    <span class="glyphicon glyphicon-ok form-control-feedback"></span>
+  {{else}}
+    {{#if hasError}}
+      <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+    {{/if}}
+  {{/if}}
+</div>
