@@ -1,19 +1,17 @@
 <div class="row">
-  <div class="col-md-4"></div>
-  <div class="col-md-4">
+  <div class="col-md-4 col-centered">
     <h4 class="text-center">Change Password</h4>
-    <div class="form-horizontal">
+    <div>
       {{input-component type="password" className="form-control" name="old_password" value=oldPassword
-                        placeholder="Old Password" fieldStatus=oldPasswordStatus}}
+                        placeholder="Old Password" fieldStatus=oldPasswordStatus enter=(action "focus" "new_password")}}
       {{input-component type="password" className="form-control" name="new_password" value=newPassword
-                        placeholder="New Password" fieldStatus=newPasswordStatus}}
+                        placeholder="New Password" fieldStatus=newPasswordStatus enter=(action "focus" "cnf_password")}}
       {{input-component type="password" className="form-control" name="cnf_password" value=confirmPassword
-                        placeholder="Confirm Password" fieldStatus=cnfPasswordStatus}}
+                        placeholder="Confirm Password" fieldStatus=cnfPasswordStatus enter=(action "changePassword")}}
       <div class="form-group text-center">
-        <button class="btn btn-primary mr-10" {{action "changePassword"}}>Save</button>
+        <button class="btn btn-primary mr-20" {{action "changePassword"}}>Save</button>
         <button class="btn btn-default" {{action "gotoHome"}}>Cancel</button>
       </div>
     </div>
   </div>
-  <div class="col-md-4"></div>
 </div>

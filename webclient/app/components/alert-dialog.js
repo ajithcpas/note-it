@@ -17,8 +17,8 @@ export default Ember.Component.extend({
 
   resetAlertWidth()
   {
-    let width = Ember.$(".alert").parent().width();
-    Ember.$(".alert").outerWidth(width);
+    let parentWidth = Ember.$(".alert").parent().width();
+    Ember.$(".alert").outerWidth(parentWidth);
   },
 
   initParam: Ember.observer("alertService.alertParam", function () {

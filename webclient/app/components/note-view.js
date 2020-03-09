@@ -6,7 +6,7 @@ export default Ember.Component.extend({
 
   didRender()
   {
-    Ember.$('[data-toggle="tooltip"]').tooltip();
+    Ember.$("[data-toggle=\"tooltip\"]").tooltip();
   },
 
   deleteNote(id)
@@ -30,7 +30,7 @@ export default Ember.Component.extend({
     confirmDelete(id)
     {
       let params = {
-        text: "Do you want to delete the note?",
+        text: "Note will be deleted permanently. Continue?",
         confirmButton: "Yes",
         cancelButton: "No",
         data: id,

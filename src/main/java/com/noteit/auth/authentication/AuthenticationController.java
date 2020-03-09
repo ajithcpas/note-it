@@ -82,6 +82,14 @@ public class AuthenticationController
         try
         {
             authoritiesService.addAuthority(authority);
+            try
+            {
+                mailService.sendWelcomeAboard(user);
+            }
+            catch (Exception ex)
+            {
+                logger.log(Level.SEVERE, "Unable to send welcome aboard email.", ex);
+            }
             CommonUtil.sendSuccessResponse(response);
         }
         catch (Exception ex)
@@ -163,13 +171,13 @@ public class AuthenticationController
         String token = request.getParameter("token");
         if (StringUtil.isBlank(id) || StringUtil.isBlank(token))
         {
-            return errorHandler.getRedirectView(AuthenticationControllerErrorHandler.LOGIN_PAGE);
+            return errorHandler.getRedirectView(AuthenticationControllerErrorHandler.VERIFY_TOKEN_PAGE);
         }
 
         Long userId = Long.parseLong(id);
         if (!passwordTokenService.isValid(userId, token))
         {
-            return errorHandler.getRedirectView(AuthenticationControllerErrorHandler.LOGIN_PAGE);
+            return errorHandler.getRedirectView(AuthenticationControllerErrorHandler.VERIFY_TOKEN_PAGE);
         }
 
         try
@@ -180,7 +188,7 @@ public class AuthenticationController
         catch (Exception ex)
         {
             logger.log(Level.SEVERE, "Unable to verify password reset token.", ex);
-            return errorHandler.getRedirectView(AuthenticationControllerErrorHandler.LOGIN_PAGE);
+            return errorHandler.getRedirectView(AuthenticationControllerErrorHandler.VERIFY_TOKEN_PAGE);
         }
         return errorHandler.getRedirectView(AuthenticationControllerErrorHandler.PWD_RESET_PAGE);
     }

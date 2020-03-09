@@ -135,6 +135,11 @@ export default Ember.Controller.extend({
     {
       this.set("showLoginPage", value);
       this.resetFields();
+    },
+
+    focus(fieldName)
+    {
+      Ember.$("input[name=" + fieldName + "]").focus();
     }
   }
 });
