@@ -72,7 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
                 .authenticationEntryPoint(restAuthenticationEntryPoint)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/index.*", "/**/*.css", "/**/*.js", "/**/*.ico", "/**/*.png", "/**/*.ttf", "/**/*.woff", "/**/*.woff2").permitAll()
+                .antMatchers("/", "/index.*", "/**/*.css", "/**/*.js", "/**/*.ico", "/**/*.png", "/**/*.ttf", "/**/*.woff", "/**/*.woff2").permitAll()
                 .antMatchers("/authn/signup", "/authn/forgot-password", "/authn/verify-token").permitAll()
                 .antMatchers("/authn/reset-password").hasAuthority(AuthorizationPrivilege.CHANGE_PASSWORD)
                 .antMatchers("/*").hasAnyAuthority("USER")
