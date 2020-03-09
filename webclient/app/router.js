@@ -12,6 +12,7 @@ Router.map(function () {
   });
   this.route("login");
   this.route("reset-password");
+  this.route("verify-token");
 });
 
 export default Router;

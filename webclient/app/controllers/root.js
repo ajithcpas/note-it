@@ -8,6 +8,11 @@ export default Ember.Controller.extend({
     searchNote()
     {
       this.get("homeController").send("searchAllNote");
+      // closes navbar toggle
+      if (Ember.$(".navbar-toggle").css("display") !== "none")
+      {
+        Ember.$(".navbar-toggle").trigger("click");
+      }
     },
 
     clearSearch()

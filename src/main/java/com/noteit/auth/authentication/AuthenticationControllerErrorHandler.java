@@ -24,6 +24,7 @@ public class AuthenticationControllerErrorHandler
 
     public static final int LOGIN_PAGE = 1;
     public static final int PWD_RESET_PAGE = 2;
+    public static final int VERIFY_TOKEN_PAGE = 3;
 
     public void sendResponse(HttpServletResponse response, String errorCode)
     {
@@ -58,6 +59,8 @@ public class AuthenticationControllerErrorHandler
         {
             case PWD_RESET_PAGE:
                 return new RedirectView(appServerConfig.getServerUrl() + "/index.html#/reset-password");
+            case VERIFY_TOKEN_PAGE:
+                return new RedirectView(appServerConfig.getServerUrl() + "/index.html#/verify-token?error=invalid");
             case LOGIN_PAGE:
             default:
                 return new RedirectView(appServerConfig.getServerUrl() + "/index.html#/login");
