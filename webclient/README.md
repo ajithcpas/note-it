@@ -14,7 +14,7 @@ You will need the following things properly installed on your computer.
 
 ## Installation
 
-* `git clone https://github.com/ajithcpas/noteit`
+* `git clone https://github.com/ajithcpas/note-it`
 * change into the new directory
 * `npm install`
 * `bower install`

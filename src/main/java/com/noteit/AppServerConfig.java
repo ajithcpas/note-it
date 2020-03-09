@@ -41,4 +41,9 @@ public class AppServerConfig
         }
         return url;
     }
+
+    public String getValue(String key)
+    {
+        return env.getProperty(key);
+    }
 }

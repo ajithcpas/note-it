@@ -13,6 +13,18 @@ export default Ember.Component.extend({
     }
   }),
 
+  isValidInput()
+  {
+    let title = Ember.$("#NEW_NOTE_TITLE").val().trim();
+    let data = Ember.$("#NEW_NOTE_CONTENT").val().trim();
+    if (!title && !data)
+    {
+      this.get("alertService").failure("Empty note cannot be saved.");
+      return false;
+    }
+    return true;
+  },
+
   actions: {
     close()
     {
@@ -22,6 +34,10 @@ export default Ember.Component.extend({
 
     addNote()
     {
+      if (!this.isValidInput())
+      {
+        return;
+      }
       let title = Ember.$("#NEW_NOTE_TITLE").val().trim();
       let data = Ember.$("#NEW_NOTE_CONTENT").val().trim();
       let self = this;
@@ -42,6 +58,10 @@ export default Ember.Component.extend({
 
     updateNote(id)
     {
+      if (!this.isValidInput())
+      {
+        return;
+      }
       let title = Ember.$("#NEW_NOTE_TITLE").val().trim();
       let data = Ember.$("#NEW_NOTE_CONTENT").val().trim();
       let self = this;

@@ -44,7 +44,7 @@ export default Ember.Controller.extend({
             }
             else if (error.status === 401)
             {
-              self.get("alertService").failure("You're password reset link might have expired. Click forgot password from the login page.", false);
+              self.get("alertService").failure("Your password reset link might have been expired. Please click forgot password from the login page.", false);
               self.resetFields();
               return;
             }
@@ -57,6 +57,11 @@ export default Ember.Controller.extend({
     {
       this.resetFields();
       this.transitionToRoute("login");
+    },
+
+    focus(fieldName)
+    {
+      Ember.$("input[name=" + fieldName + "]").focus();
     }
   }
 });

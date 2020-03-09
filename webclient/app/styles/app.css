@@ -1,3 +1,7 @@
+.col-centered {
+  float: none;
+  margin: 0 auto;
+}
 .fixed {
   position: fixed;
   z-index: 99999;
@@ -20,14 +24,17 @@
 .mb-20 {
   margin-bottom: 20px;
 }
+.mb-40 {
+  margin-bottom: 40px;
+}
 .mr-5 {
   margin-right: 5px;
 }
 .mr-10 {
   margin-right: 10px;
 }
-.w-30p {
-  width: 30%;
+.mr-20 {
+  margin-right: 20px;
 }
 .note {
   background: white;
@@ -38,7 +45,6 @@
   overflow-x: hidden;
   overflow-y: hidden;
   word-break: break-word;
-  display: inline-block;
   margin: 10px;
   vertical-align: top;
   box-shadow: 10px 10px rgba(0, 0, 0, .15);
@@ -129,9 +135,51 @@ textarea {
 #confirmDialog .modal-body {
   padding: 5px 15px 30px;
 }
-#confirmDialog .glyphicon-question-sign {
+#confirmDialog .glyphicon-warning-sign {
   color: indianred;
   font-size: x-large;
   top: 6px;
-  margin-right: 5px;
+  margin-right: 10px;
+}
+#cover-spin {
+  position: fixed;
+  width: 100%;
+  left: 0;right: 0;top: 0;bottom: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: 9999;
+  display: none;
+}
+@-webkit-keyframes spin {
+  from {-webkit-transform: rotate(0deg);}
+  to {-webkit-transform: rotate(360deg);}
+}
+@keyframes spin {
+  from {transform: rotate(0deg);}
+  to {transform: rotate(360deg);}
+}
+#cover-spin::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 48%;top: 40%;
+  width: 40px;height: 40px;
+  border-style: solid;
+  border-color: dodgerblue;
+  border-top-color: transparent;
+  border-width: 4px;
+  border-radius: 50%;
+  -webkit-animation: spin .8s linear infinite;
+  animation: spin .8s linear infinite;
+}
+.logo {
+  width: 130px;
+}
+.block-link {
+  cursor: pointer;
+}
+.block-link:hover {
+  text-decoration: underline;
+}
+.blue {
+  color: #337ab7;
 }

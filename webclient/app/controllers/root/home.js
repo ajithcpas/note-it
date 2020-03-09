@@ -21,7 +21,7 @@ export default Ember.Controller.extend({
         }
         self.set("notes", response);
       }).catch((error) => {
-        if (error.status && error.status === 401)
+        if (error.status && (error.status === 401 || error.status === 403))
         {
           self.transitionToRoute("login");
         }
@@ -40,7 +40,7 @@ export default Ember.Controller.extend({
       AJAXUtil.get("/home").then((response) => {
         self.set("notes", response);
       }).catch((error) => {
-        if (error.status && error.status === 401)
+        if (error.status && (error.status === 401 || error.status === 403))
         {
           self.transitionToRoute("login");
         }

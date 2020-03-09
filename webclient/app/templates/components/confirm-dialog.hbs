@@ -5,14 +5,10 @@
         <button type="button" class="close" {{action "cancel"}}>&times;</button>
         <h4 class="modal-title">{{title}}</h4>
       </h4>
-      <div class="modal-body"><span class="glyphicon glyphicon-question-sign"></span><span>{{text}}</span></div>
+      <div class="modal-body"><span class="glyphicon glyphicon-warning-sign"></span><span>{{text}}</span></div>
       <div class="modal-footer">
-        <button {{action "confirm"}} class="btn btn-primary confirm-button">
-          {{confirmButton}}
-        </button>
-        <button {{action "cancel"}} class="btn btn-default cancel-button">
-          {{cancelButton}}
-        </button>
+        <button {{action "confirm"}} class="btn btn-primary confirm-button mr-20">{{confirmButton}}</button>
+        <button {{action "cancel"}} class="btn btn-default cancel-button">{{cancelButton}}</button>
       </div>
     </div>
   </div>

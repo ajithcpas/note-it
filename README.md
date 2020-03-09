@@ -13,7 +13,7 @@ This project is built using the following frameworks and tools:
 
 ## Installation
 
-* `git clone https://github.com/ajithcpas/noteit`
+* `git clone https://github.com/ajithcpas/note-it`
 * change into the new directory
 
 ## Running / Development
@@ -21,6 +21,6 @@ This project is built using the following frameworks and tools:
 * `gradle bootRun`
 * Visit your app at [http://localhost:9090](http://localhost:9090).
 
-# Collaboration
+## Collaboration
 
 Make a pull request detailing about the feature or enhancement changes. It will be updated to live after review :-)

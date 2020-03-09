@@ -1,22 +1,27 @@
 {{note-editor note=currNote show=currNote.editing save="getAllNote"}}
 {{#unless isSearch}}
   <div class="row">
-    <div class="col-md-12 text-center">
-      <button class="btn btn-primary w-30p" {{action "addNote"}}>Create New Note</button>
+    <div class="col-md-6 col-sm-3 col-centered">
+      <button class="btn btn-primary btn-block" {{action "addNote"}}>
+        <span class="pull-left">Create New Note</span>
+        <span class="glyphicon glyphicon-plus pull-right"></span>
+      </button>
     </div>
   </div>
 {{/unless}}
 
-<div class="notes">
+<div class="notes row">
   {{#each notes as |note|}}
-    {{note-view note=note onedit="editNote" ondelete="deleteNote"}}
+    <div class="col-md-6 col-sm-1 mb-40">
+      {{note-view note=note onedit="editNote" ondelete="deleteNote"}}
+    </div>
   {{else}}
-    <div class="text-center">
+    <div class="col-md-4 col-centered text-center">
       {{#if isSearch}}
-        No note contains the search term :(<br/>
+        <span>No note contains the search term :(</span><br/>
         <a href="#" class="btn btn-link" {{action "getAllNote"}}>Go Home</a>
       {{else}}
-        No note created yet :(
+        <span>No notes created yet :(</span>
       {{/if}}
     </div>
   {{/each}}

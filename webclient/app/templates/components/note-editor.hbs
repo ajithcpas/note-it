@@ -4,19 +4,17 @@
       <div class="modal-header">
         <button type="button" class="close" {{action "close"}}>&times;</button>
         <h4 class="modal-title">
-          {{input id="NEW_NOTE_TITLE" class="input-title" name="title" placeholder="Enter title here..."
+          {{input id="NEW_NOTE_TITLE" class="input-title" name="title" placeholder="Title"
                   value=note.title}}
         </h4>
       </div>
       <div class="modal-body">
-        {{textarea id="NEW_NOTE_CONTENT" value=note.data placeholder="Enter content here..."}}
+        {{textarea id="NEW_NOTE_CONTENT" value=note.data placeholder="Content..."}}
       </div>
       <div class="modal-footer">
-        {{#if note.id}}
-          <button type="button" class="btn btn-primary" {{action "updateNote" note.id}}>Update</button>
-        {{else}}
-          <button type="button" class="btn btn-primary" {{action "addNote"}}>Create</button>
-        {{/if}}
+        <button type="button" class="btn btn-primary mr-20"
+          {{action (if note.id (action "updateNote" note.id) (action "addNote"))}}>Save
+        </button>
         <button type="button" class="btn btn-default" {{action "close"}}>Cancel</button>
       </div>
     </div>

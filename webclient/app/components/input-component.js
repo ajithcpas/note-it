@@ -10,7 +10,11 @@ export default Ember.Component.extend({
     if (this.get("fieldStatus"))
     {
       this.set("hasSuccess", this.get("fieldStatus") === "success");
-      this.set("hasError", this.get("fieldStatus") === "error");
+      if (this.get("fieldStatus") === "error")
+      {
+        this.set("hasError", true);
+        Ember.$("input[name=" + this.get("name") + "]").focus();
+      }
     }
     else
     {

@@ -54,6 +54,11 @@ export default Ember.Controller.extend({
       this.resetFields();
       Ember.$(".navbar").show();
       this.transitionToRoute("root.home");
+    },
+
+    focus(fieldName)
+    {
+      Ember.$("input[name=" + fieldName + "]").focus();
     }
   }
 });
