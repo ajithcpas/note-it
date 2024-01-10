@@ -3,7 +3,6 @@ package com.noteit.note;
 import com.noteit.auth.Users;
 import com.noteit.auth.UsersService;
 import com.noteit.util.StringUtil;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
@@ -13,28 +12,23 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class NoteService
-{
+public class NoteService {
     @Autowired
     private NoteRepository noteRepository;
 
     @Autowired
     private UsersService usersService;
 
-    public List<Note> getAllNote()
-    {
+    public List<Note> getAllNote() {
         Users user = usersService.getCurrentUser();
         return noteRepository.findNoteByUserIdOrderByCreatedOnDesc(user.getId());
     }
 
-    public List<Note> getAllNote(String search)
-    {
+    public List<Note> getAllNote(String search) {
         List<Note> result = new ArrayList<>();
         List<Note> notes = getAllNote();
-        for (Note note : notes)
-        {
-            if (StringUtil.containsIgnoreCase(note.getTitle(), search) || StringUtil.containsIgnoreCase(note.getData(), search))
-            {
+        for (Note note : notes) {
+            if (StringUtil.containsIgnoreCase(note.getTitle(), search) || StringUtil.containsIgnoreCase(note.getData(), search)) {
                 note.setTitle(highlight(note.getTitle(), search));
                 note.setData(highlight(note.getData(), search));
                 result.add(note);
@@ -43,10 +37,8 @@ public class NoteService
         return result;
     }
 
-    public String highlight(String data, String search)
-    {
-        if (!StringUtil.containsIgnoreCase(data, search))
-        {
+    public String highlight(String data, String search) {
+        if (!StringUtil.containsIgnoreCase(data, search)) {
             return data;
         }
         int startPos = StringUtil.ignoreCaseIndexOf(data, search);
@@ -55,8 +47,7 @@ public class NoteService
         return data;
     }
 
-    public boolean addNote(Note note)
-    {
+    public boolean addNote(Note note) {
         Users user = usersService.getCurrentUser();
         note.setUser(user);
         note.setTitle(HtmlUtils.htmlEscape(note.getTitle().trim()));
@@ -65,11 +56,9 @@ public class NoteService
         return true;
     }
 
-    public boolean updateNote(Note note) throws Exception
-    {
+    public boolean updateNote(Note note) throws Exception {
         Optional<Note> noteOptional = noteRepository.findById(note.getId());
-        if (!noteOptional.isPresent())
-        {
+        if (!noteOptional.isPresent()) {
             throw new Exception(NoteControllerErrorHandler.NOTE_NOT_EXISTS);
         }
         Note existingNote = noteOptional.get();
@@ -80,11 +69,9 @@ public class NoteService
         return true;
     }
 
-    public Note deleteNote(Long id) throws Exception
-    {
+    public Note deleteNote(Long id) throws Exception {
         Optional<Note> noteOptional = noteRepository.findById(id);
-        if (!noteOptional.isPresent())
-        {
+        if (!noteOptional.isPresent()) {
             throw new Exception(NoteControllerErrorHandler.NOTE_NOT_EXISTS);
         }
 

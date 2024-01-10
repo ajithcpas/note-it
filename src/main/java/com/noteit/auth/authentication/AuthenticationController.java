@@ -11,21 +11,16 @@ import com.noteit.mail.MailService;
 import com.noteit.util.CommonUtil;
 import com.noteit.util.StringUtil;
 import com.noteit.util.ValidatorUtil;
-
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Collections;
 import java.util.Map;
 import java.util.logging.Level;
@@ -33,8 +28,7 @@ import java.util.logging.Logger;
 
 @RestController
 @RequestMapping(path = "/authn")
-public class AuthenticationController
-{
+public class AuthenticationController {
     private static final Logger logger = Logger.getLogger(AuthenticationController.class.getName());
 
     @Autowired
@@ -53,25 +47,21 @@ public class AuthenticationController
     private AuthoritiesService authoritiesService;
 
     @PostMapping(path = "/signup")
-    public void signUp(HttpServletRequest request, HttpServletResponse response)
-    {
+    public void signUp(HttpServletRequest request, HttpServletResponse response) {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        if (!ValidatorUtil.isValidEmail(username))
-        {
+        if (!ValidatorUtil.isValidEmail(username)) {
             errorHandler.sendResponse(response, AuthenticationControllerErrorHandler.INVALID_EMAIL);
             return;
         }
-        if (!ValidatorUtil.isValidPassword(password))
-        {
+        if (!ValidatorUtil.isValidPassword(password)) {
             errorHandler.sendResponse(response, AuthenticationControllerErrorHandler.INVALID_PASSWORD);
             return;
         }
 
         Users user = new Users(username, password);
-        if (usersService.isExists(user))
-        {
+        if (usersService.isExists(user)) {
             errorHandler.sendResponse(response, AuthenticationControllerErrorHandler.EMAIL_EXISTS);
             return;
         }
@@ -79,114 +69,88 @@ public class AuthenticationController
         Authorities authority = new Authorities();
         authority.setUser(user);
         authority.setAuthority("USER");
-        try
-        {
+        try {
             authoritiesService.addAuthority(authority);
-            try
-            {
+            try {
                 mailService.sendWelcomeAboard(user);
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 logger.log(Level.SEVERE, "Unable to send welcome aboard email.", ex);
             }
             CommonUtil.sendSuccessResponse(response);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             logger.log(Level.SEVERE, "Unable to sign up user.", ex);
             errorHandler.sendResponse(response, AuthenticationControllerErrorHandler.SERVER_ERROR);
         }
     }
 
     @PostMapping(path = "/change-password")
-    public void changePassword(HttpServletRequest request, HttpServletResponse response)
-    {
+    public void changePassword(HttpServletRequest request, HttpServletResponse response) {
         String oldPassword = request.getParameter("oldPassword");
         String newPassword = request.getParameter("newPassword");
 
         Users users = usersService.getCurrentUser();
-        if (!usersService.checkPassword(oldPassword))
-        {
+        if (!usersService.checkPassword(oldPassword)) {
             errorHandler.sendResponse(response, AuthenticationControllerErrorHandler.INCORRECT_PASSWORD);
             return;
         }
-        if (!ValidatorUtil.isValidPassword(newPassword))
-        {
+        if (!ValidatorUtil.isValidPassword(newPassword)) {
             errorHandler.sendResponse(response, AuthenticationControllerErrorHandler.INVALID_PASSWORD);
             return;
         }
 
-        try
-        {
+        try {
             users.setPassword(newPassword);
             usersService.updateUser(users);
             CommonUtil.sendSuccessResponse(response);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             logger.log(Level.SEVERE, "Unable to change user password.", ex);
             errorHandler.sendResponse(response, ex.getMessage());
         }
     }
 
     @PostMapping(path = "/forgot-password")
-    public void forgotPassword(@RequestBody Map<String, Object> requestParam, HttpServletResponse response)
-    {
+    public void forgotPassword(@RequestBody Map<String, Object> requestParam, HttpServletResponse response) {
         String email = (String) requestParam.get("email");
-        if (!ValidatorUtil.isValidEmail(email))
-        {
+        if (!ValidatorUtil.isValidEmail(email)) {
             errorHandler.sendResponse(response, AuthenticationControllerErrorHandler.INVALID_EMAIL);
             return;
         }
 
         Users user;
-        try
-        {
+        try {
             user = usersService.getUser(email);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             errorHandler.sendResponse(response, ex.getMessage());
             return;
         }
 
         PasswordResetToken token = passwordTokenService.getResetToken(user);
-        try
-        {
+        try {
             mailService.sendPasswordResetToken(token);
             CommonUtil.sendSuccessResponse(response);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             logger.log(Level.SEVERE, "Unable to Email the reset password token.", ex);
             errorHandler.sendResponse(response, ex.getMessage());
         }
     }
 
     @GetMapping(path = "/verify-token")
-    public RedirectView verifyToken(HttpServletRequest request)
-    {
+    public RedirectView verifyToken(HttpServletRequest request) {
         String id = request.getParameter("id");
         String token = request.getParameter("token");
-        if (StringUtil.isBlank(id) || StringUtil.isBlank(token))
-        {
+        if (StringUtil.isBlank(id) || StringUtil.isBlank(token)) {
             return errorHandler.getRedirectView(AuthenticationControllerErrorHandler.VERIFY_TOKEN_PAGE);
         }
 
         Long userId = Long.parseLong(id);
-        if (!passwordTokenService.isValid(userId, token))
-        {
+        if (!passwordTokenService.isValid(userId, token)) {
             return errorHandler.getRedirectView(AuthenticationControllerErrorHandler.VERIFY_TOKEN_PAGE);
         }
 
-        try
-        {
+        try {
             Authentication authentication = new UsernamePasswordAuthenticationToken(usersService.getUser(userId), null, Collections.singletonList(new SimpleGrantedAuthority(AuthorizationPrivilege.CHANGE_PASSWORD)));
             SecurityContextHolder.getContext().setAuthentication(authentication);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             logger.log(Level.SEVERE, "Unable to verify password reset token.", ex);
             return errorHandler.getRedirectView(AuthenticationControllerErrorHandler.VERIFY_TOKEN_PAGE);
         }
@@ -194,25 +158,20 @@ public class AuthenticationController
     }
 
     @PostMapping(path = "/reset-password")
-    public void resetPassword(@RequestBody Map<String, String> params, HttpServletResponse response)
-    {
+    public void resetPassword(@RequestBody Map<String, String> params, HttpServletResponse response) {
         String password = params.get("password");
-        if (!ValidatorUtil.isValidPassword(password))
-        {
+        if (!ValidatorUtil.isValidPassword(password)) {
             errorHandler.sendResponse(response, AuthenticationControllerErrorHandler.INVALID_PASSWORD);
             return;
         }
 
-        try
-        {
+        try {
             usersService.changePassword(password);
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             Users user = (Users) authentication.getPrincipal();
             passwordTokenService.removeToken(user);
             CommonUtil.sendSuccessResponse(response);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             errorHandler.sendResponse(response, ex.getMessage());
         }
     }

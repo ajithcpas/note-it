@@ -1,18 +1,10 @@
 package com.noteit.auth.authorization;
 
 import com.noteit.auth.Users;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import java.sql.Timestamp;
 import java.util.UUID;
 
@@ -20,8 +12,7 @@ import java.util.UUID;
 @Table(name = "PasswordResetToken")
 @Data
 @NoArgsConstructor
-public class PasswordResetToken
-{
+public class PasswordResetToken {
     private static final int EXPIRATION = 60 * 60 * 1000;
 
     @Id
@@ -38,14 +29,12 @@ public class PasswordResetToken
     @JoinColumn(name = "USER_ID", nullable = false, unique = true)
     private Users user;
 
-    public PasswordResetToken(Users user)
-    {
+    public PasswordResetToken(Users user) {
         this.user = user;
         this.refresh();
     }
 
-    public void refresh()
-    {
+    public void refresh() {
         this.token = UUID.randomUUID().toString();
         this.expiryTime = new Timestamp(System.currentTimeMillis() + EXPIRATION);
     }

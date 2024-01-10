@@ -3,30 +3,27 @@ package com.noteit.mail;
 import com.noteit.AppServerConfig;
 import com.noteit.auth.Users;
 import com.noteit.auth.authorization.PasswordResetToken;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import lombok.Data;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import java.nio.charset.StandardCharsets;
 
 @Data
 @Service
-public class MailService
-{
+public class MailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
     @Autowired
     private AppServerConfig appServerConfig;
 
-    public void sendPasswordResetToken(PasswordResetToken token) throws Exception
-    {
+    public void sendPasswordResetToken(PasswordResetToken token) throws Exception {
         MailMessage mailMessage = new MailMessage();
         mailMessage.setToAddress(token.getUser().getUsername());
         mailMessage.setSubject("Reset Password | NoteIt");
@@ -43,8 +40,7 @@ public class MailService
         send(mailMessage, false);
     }
 
-    public void sendWelcomeAboard(Users user) throws MessagingException
-    {
+    public void sendWelcomeAboard(Users user) throws MessagingException {
         MailMessage mailMessage = new MailMessage();
         mailMessage.setToAddress(user.getUsername());
         mailMessage.setSubject("Welcome to NoteIt");
@@ -61,13 +57,11 @@ public class MailService
         send(mailMessage);
     }
 
-    public void send(MailMessage mailMessage) throws MessagingException
-    {
+    public void send(MailMessage mailMessage) throws MessagingException {
         send(mailMessage, true);
     }
 
-    public void send(MailMessage mailMessage, boolean async) throws MessagingException
-    {
+    public void send(MailMessage mailMessage, boolean async) throws MessagingException {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
 
@@ -79,13 +73,10 @@ public class MailService
         helper.setText(logoImage + mailMessage.getText(), true);
         helper.addInline("logo.png", new ClassPathResource("static/assets/images/logo.png"));
 
-        if (async)
-        {
+        if (async) {
             Thread thred = new Thread(() -> javaMailSender.send(message));
             thred.start();
-        }
-        else
-        {
+        } else {
             javaMailSender.send(message);
         }
     }

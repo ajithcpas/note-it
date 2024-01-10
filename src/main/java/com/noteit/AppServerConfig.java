@@ -8,8 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Getter
-public class AppServerConfig
-{
+public class AppServerConfig {
     private static String scheme;
     private static String host;
     private static String port;
@@ -19,10 +18,8 @@ public class AppServerConfig
     @Autowired
     private Environment env;
 
-    public String getServerUrl()
-    {
-        if (url != null)
-        {
+    public String getServerUrl() {
+        if (url != null) {
             return url;
         }
 
@@ -31,19 +28,16 @@ public class AppServerConfig
         port = env.getProperty("app.server.port");
         context = null;
         url = scheme + "://" + host;
-        if (port != null && !port.equals("80") && !port.equals("443"))
-        {
+        if (port != null && !port.equals("80") && !port.equals("443")) {
             url += ":" + port;
         }
-        if (context != null)
-        {
+        if (context != null) {
             url += "/" + context;
         }
         return url;
     }
 
-    public String getValue(String key)
-    {
+    public String getValue(String key) {
         return env.getProperty(key);
     }
 }
